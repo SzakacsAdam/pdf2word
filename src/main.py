@@ -4,10 +4,9 @@ import pythoncom
 from win32com.client import Dispatch
 from win32com.client import DispatchEx
 from win32com.client.dynamic import ERRORS_BAD_CONTEXT
-from win32com.client.makepy import GenerateFromTypeLibSpec
 from winerror import E_NOTIMPL
 
-from src.folder_watcher import FolderWatcher
+from src.folder_handler import FolderWatcher
 from src.pdf_handler import PdfContainer
 from src.pdf_handler.pdf_converter import PdfConverter
 
@@ -21,7 +20,7 @@ class Main:
     def __init__(self) -> None:
         pythoncom.CoInitialize()
         ERRORS_BAD_CONTEXT.append(E_NOTIMPL)
-        GenerateFromTypeLibSpec('Acrobat')
+        # GenerateFromTypeLibSpec('Acrobat')
         adobe = DispatchEx('AcroExch.App')
         av_doc = Dispatch('AcroExch.AVDoc')
         av_doc_id = pythoncom.CoMarshalInterThreadInterfaceInStream(
@@ -33,10 +32,12 @@ class Main:
                                                       container=self.container,
                                                       src=self.src)
 
-    def run(self) -> None:
-        sleep_time: int = 60 * 2  # sec*min
+    def start_converter(self) -> None:
         self.folder_watcher.start()
         self.pdf_convert.start()
+
+    def run(self) -> None:
+        sleep_time: int = 60 * 2  # sec*min
         while True:
             self.container.check_expiration()
             sleep(sleep_time)
