@@ -34,10 +34,13 @@ class PdfContainer:
     def check_expiration(self) -> None:
         now_time: int = int(time())
         exp: int = self.expiration_time
-
-        for pdf in self.pdf_files.values():
-            if now_time < pdf.created + exp:
-                self.pdf_files.pop(pdf.pdf_id)
+        exp_files: list[PdfFile] = [
+            pdf
+            for pdf in self.pdf_files.values()
+            if now_time < pdf.created + exp
+        ]
+        for file in exp_files:
+            self.pdf_files.pop(file.pdf_id)
 
     def remove_pdf_from_dict(self, pdf_id: str) -> None:
         try:
