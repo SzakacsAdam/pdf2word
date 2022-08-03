@@ -11,13 +11,15 @@ from win32com.client import Dispatch
 
 from .pdf_container import PdfContainer
 from .pdf_file import PdfFile
+from src.folder_handler import BackUpPdf
+from src.folder_handler import OutputDir
 
 
 class PdfConverter(Thread):
     daemon: bool = True
     sleep_time: float = 10 ** -1
     out_dir_name: str = "output_dir"
-    backup_dir_name: str = "backup"
+    backup_dir_name: str = BackUpPdf.folder_name
 
     __slots__ = ("av_doc", "av_doc_id", "container", "backup", "out")
 
