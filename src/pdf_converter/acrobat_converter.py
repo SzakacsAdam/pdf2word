@@ -9,17 +9,9 @@ from winerror import E_NOTIMPL
 from src.pdf_converter.converter import FileConverter
 from src.pdf_converter.folder_handlers import JunkCollector
 from src.pdf_converter.folder_handlers import PdfFolders
-from src.pdf_converter.folders import BackUpPdf
-from src.pdf_converter.folders import ErrorDir
-from src.pdf_converter.folders import FolderDocx
-from src.pdf_converter.folders import FolderPptx
-from src.pdf_converter.folders import FolderXlsx
-from src.pdf_converter.folders import JunkDir
-from src.pdf_converter.folders import OutputDir
 
 
 class AcrobatConverter:
-    src: str = "/test_dir"
 
     def __init__(self) -> None:
         pythoncom.CoInitialize()
@@ -29,19 +21,6 @@ class AcrobatConverter:
         av_doc = Dispatch('AcroExch.AVDoc')
         av_doc_id = pythoncom.CoMarshalInterThreadInterfaceInStream(
             pythoncom.IID_IDispatch, av_doc)
-
-        src: str = self.src
-        self.folder_docx: FolderDocx = FolderDocx(src)
-        self.folder_xlsx: FolderXlsx = FolderXlsx(src)
-        self.folder_pptx: FolderPptx = FolderPptx(src)
-
-        # output project_folders
-        self.backup_dir: BackUpPdf = BackUpPdf(src)
-        self.error_dir: ErrorDir = ErrorDir(src)
-        self.junk_dir: JunkDir = JunkDir(src)
-        self.output_dir: OutputDir = OutputDir(src)
-
-        print(self.folder_docx)
 
         self.pdf_folders: PdfFolders = PdfFolders(
             (self.folder_docx, self.folder_xlsx, self.folder_pptx))
@@ -68,5 +47,5 @@ class AcrobatConverter:
 
 
 if __name__ == '__main__':
-    main: NewMain = NewMain()
+    main: AcrobatConverter = AcrobatConverter()
     main.run()
