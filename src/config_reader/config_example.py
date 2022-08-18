@@ -4,8 +4,8 @@ config_example: str = """
 #    |  |_/|     /__   |^|(_) | (_|
 
 
-[CONVERT]
-convert.path = F:\\pythonProjects\\newPdf2Word\\test_dir
+[CONVERTER]
+base.path = F:\\pythonProjects\\newPdf2Word\\test_dir
 
 backup.remove = true
 backup.remove.time = 1
@@ -19,8 +19,8 @@ output.remove.time = 1
 error.remove = true
 error.remove.time = 1
 
-
-[LOG]
+[API]
+post = 53814
 # enable logs to be saved. (True/False)
 log.save = True
 
