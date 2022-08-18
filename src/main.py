@@ -1,3 +1,4 @@
+
 from src.folders import BackUpPdf
 from src.folders import ErrorDir
 from src.folders import FolderDocx
@@ -5,8 +6,10 @@ from src.folders import FolderPptx
 from src.folders import FolderXlsx
 from src.folders import JunkDir
 from src.folders import OutputDir
-
 from src.pdf_converter import AcrobatConverter
+
+from time import sleep
+
 
 
 class Main:
@@ -34,7 +37,6 @@ class Main:
 
     def start(self) -> None:
         self.acrobat_converter.run()
-
 
 if __name__ == '__main__':
     main: Main = Main()

@@ -12,5 +12,6 @@ pyinstaller-hooks-contrib==2022.8
 PyPDF2==2.8.1
 pywin32==304
 pywin32-ctypes==0.2.0
+Werkzeug==2.2.1
 waitress==2.1.2
 Werkzeug==2.2.1
