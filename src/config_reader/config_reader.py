@@ -26,47 +26,28 @@ class ConfigReader:
         print(self.config_dict)
 
     def read_config_file(self) -> None:
-        self.config_dict["src"] = self.__read_str("CONVERTER", "base.path",
-                                                  getcwd())
-        self.read_remove_time("backup")
-        self.read_remove_time("junk_files")
-        self.read_remove_time("output")
-        self.read_remove_time("error")
+        self.config_dict["src"] = self.__read_parser(str, "CONVERTER",
+                                                     "base.path",
+                                                     getcwd())
+        self.__read_remove_time("backup")
+        self.__read_remove_time("junk_files")
+        self.__read_remove_time("output")
+        self.__read_remove_time("error")
 
-    def read_remove_time(self, prefix: str) -> None:
+    def __read_remove_time(self, prefix: str) -> None:
         self.config_dict[f"{prefix}_rem_time"] = None
-        if self.__read_bool("CONVERTER", f"{prefix}.remove", False):
-            self.config_dict[f"{prefix}_rem_time"] = int(self.day_to_sec *
-                self.__read_float("CONVERTER", f"{prefix}.remove.time", 1))
+        if self.__read_parser(bool, "CONVERTER", f"{prefix}.remove", False):
+            conf_read: float = self.__read_parser(float, "CONVERTER",
+                                                  f"{prefix}.remove.time", 1)
+            conf_read_to_day: int = int(self.day_to_sec * conf_read)
+            self.config_dict[f"{prefix}_rem_time"] = conf_read_to_day
 
-    def __read_str(self, section: str, propagate: str,
-                   default: str) -> str:
+    def __read_parser(self, convert_type: callable, section: str,
+                      propagate: str, default: str | bool | float | int) \
+            -> str | bool | float | int:
         try:
-            return self.config[section][propagate]
-        except KeyError:
-            return default
-
-    def __read_int(self, section: str, propagate: str,
-                   default: int) -> int:
-        try:
-            return int(self.config[section][propagate])
+            return convert_type(self.config[section][propagate])
         except KeyError or ValueError:
-            return default
-
-    def __read_float(self, section: str, propagate: str,
-                     default: float) -> float:
-        try:
-            return float(self.config[section][propagate])
-        except KeyError or ValueError:
-            return default
-
-    def __read_bool(self, section: str, propagate: str,
-                    default: bool) -> bool:
-        truthy: tuple[str, str, str] = ("True", "true", "yes")
-        try:
-            val: str = self.config[section][propagate]
-            return val in truthy
-        except KeyError:
             return default
 
     def create_example_config(self) -> None:
